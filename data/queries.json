@@ -1,0 +1,80 @@
+[
+   {
+      "name": "index",
+      "query": "MATCH (c:Cocktail)-[r:CONTAINS]->(i:Ingredient) WITH c, r, i ORDER BY r.index WITH { name:        c.name     , timing:      c.timing\n     , taste:       c.taste\n     , ingredients: collect({ ingredient: i.ingredient\n                            , amount:     r.amount\n                            , unit:       r.unit\n                            })\n     , preparation: c.preparation\n     } AS cocktail\nORDER BY cocktail.name RETURN {cocktails: collect(cocktail)};",
+      "params": [],
+      "template": "site"
+   },
+   {
+      "name": "Ingredient",
+      "query": "MATCH (i:Ingredient)<--(cc:Cocktail) WHERE i.ingredient =~ {ingredient} WITH cc AS c MATCH (c)-[r]->(i) WITH c, r, i ORDER BY r.index WITH { name:        c.name     , timing:      c.timing\n     , taste:       c.taste\n     , ingredients: collect({ ingredient: i.ingredient\n                            , amount:     r.amount\n                            , unit:       r.unit\n                            })\n     , preparation: c.preparation\n     } AS cocktail\nORDER BY cocktail.name RETURN {cocktails: collect(cocktail)};",
+      "params": [
+         {
+            "ingredient": ".*Gin"
+         },
+         {
+            "ingredient": ".*(Whiskey|Whisky)"
+         },
+         {
+            "ingredient": ".*(Brandy|Cognac).*"
+         },
+         {
+            "ingredient": "(Light|Dark) Rum"
+         },
+         {
+            "ingredient": "Vodka"
+         },
+         {
+            "ingredient": ".*(Korn|Kümmel).*"
+         },
+         {
+            "ingredient": ".*(Champagne|Prosecco).*"
+         }
+      ],
+      "template": "site"
+   },
+   {
+      "name": "Timing",
+      "query": "MATCH (c:Cocktail)-[r:CONTAINS]->(i:Ingredient) WHERE c.timing = {timing} WITH c, r, i ORDER BY r.index WITH { name:        c.name     , timing:      c.timing\n     , taste:       c.taste\n     , ingredients: collect({ ingredient: i.ingredient\n                            , amount:     r.amount\n                            , unit:       r.unit\n                            })\n     , preparation: c.preparation\n     } AS cocktail\nORDER BY cocktail.name RETURN {cocktails: collect(cocktail)};",
+      "params": [
+         {
+            "timing": "Pre-dinner"
+         },
+         {
+            "timing": "Longdrink"
+         },
+         {
+            "timing": "All day"
+         },
+         {
+            "timing": "After dinner"
+         }
+      ],
+      "template": "site"
+   },
+   {
+      "name": "Taste",
+      "query": "MATCH (c:Cocktail)-[r:CONTAINS]->(i:Ingredient) WHERE c.taste = {taste} WITH c, r, i ORDER BY r.index WITH { name:        c.name     , timing:      c.timing\n     , taste:       c.taste\n     , ingredients: collect({ ingredient: i.ingredient\n                            , amount:     r.amount\n                            , unit:       r.unit\n                            })\n     , preparation: c.preparation\n     } AS cocktail\nORDER BY cocktail.name RETURN {cocktails: collect(cocktail)};",
+      "params": [
+         {
+            "taste": "Fresh"
+         },
+         {
+            "taste": "Boozy"
+         },
+         {
+            "taste": "Sweet"
+         },
+         {
+            "taste": "Bitter sweet"
+         },
+         {
+            "taste": "Sour"
+         },
+         {
+            "taste": "Salty"
+         }
+      ],
+      "template": "site"
+   }
+]
